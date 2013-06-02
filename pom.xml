@@ -494,11 +494,7 @@
 
 		<!-- REST -->
 
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-rest-webmvc</artifactId>
-			<version>1.0.0.RELEASE</version>
-		</dependency>
+		<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-rest-webmvc</artifactId> <version>1.0.0.RELEASE</version> </dependency> -->
 
 	</dependencies>
 

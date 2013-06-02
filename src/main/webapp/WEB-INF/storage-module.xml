@@ -31,6 +31,7 @@
 		<entry key="javax.persistence.jdbc.user" value="${OPENSHIFT_MYSQL_DB_USERNAME}" />
 		<entry key="javax.persistence.jdbc.password" value="${OPENSHIFT_MYSQL_DB_PASSWORD}" />
 		<entry key="javax.persistence.jdbc.url" value="jdbc:${OPENSHIFT_MYSQL_DB_URL}" />
+		<entry key="eclipselink.ddl-generation" value="create-tables" />
 	</util:map>
 
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:security="http://www.springframework.org/schema/security" xmlns:util="http://www.springframework.org/schema/util"
-	xmlns:metrics="http://www.ryantenney.com/schema/metrics"
-	xsi:schemaLocation="http://www.ryantenney.com/schema/metrics http://www.ryantenney.com/schema/metrics/metrics-2.1.xsd
-        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<!-- this is necessary as the second component scan would create new instances of all named beans -->
-	<context:component-scan base-package="com.openshift.test.rest">
+	<context:component-scan base-package="com.openshift.test.web">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
-
 	<!-- The following beans replace mvc:annotation-config, we can not use the convenient wrapper because we need to configure useSuffixPatternMatch -->
-	<mvc:annotation-driven />
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="false">
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+		</mvc:message-converters>
+	</mvc:annotation-driven>
 
 	<bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor" />
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 	<bean id="conversionServiceExposingInterceptor" class="org.springframework.web.servlet.handler.ConversionServiceExposingInterceptor">
 		<constructor-arg ref="conversionService" />
 	</bean>
+
+	<context:property-placeholder location="classpath*:/*-default.properties" order="10" local-override="true" ignore-unresolvable="false" />
+	<beans profile="development">
+		<context:property-placeholder location="classpath*:*-development.properties" ignore-resource-not-found="true"
+			ignore-unresolvable="true" order="5" />
+	</beans>
 </beans>
