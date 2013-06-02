@@ -28,9 +28,9 @@
 
 	<util:map id="jpaPropertyMap">
 		<entry key="javax.persistence.jdbc.driver" value="${database.driver}" />
-		<entry key="javax.persistence.jdbc.user" value="${OPENSHIFT_MYSQL_DB_USERNAME}" />
-		<entry key="javax.persistence.jdbc.password" value="${OPENSHIFT_MYSQL_DB_PASSWORD}" />
-		<entry key="javax.persistence.jdbc.url" value="jdbc:${OPENSHIFT_MYSQL_DB_URL}" />
+		<entry key="javax.persistence.jdbc.user" value="${database.user}" />
+		<entry key="javax.persistence.jdbc.password" value="${database.password}" />
+		<entry key="javax.persistence.jdbc.url" value="${database.uri}" />
 		<entry key="eclipselink.ddl-generation" value="create-tables" />
 	</util:map>
 
