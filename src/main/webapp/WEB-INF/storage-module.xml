@@ -1,0 +1,44 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<description>
+		Storage layer services
+	</description>
+
+	<!-- JPA + DAOs -->
+	<jpa:repositories base-package="com.openshift.test.dao" />
+	<bean id="domainClassConverter" class="org.springframework.data.repository.support.DomainClassConverter">
+		<constructor-arg ref="conversionService" />
+	</bean>
+	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean" />
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="entityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect" />
+
+	<util:map id="jpaPropertyMap">
+		<entry key="javax.persistence.jdbc.driver" value="${database.driver}" />
+		<entry key="javax.persistence.jdbc.user" value="${OPENSHIFT_MYSQL_DB_USERNAME}" />
+		<entry key="javax.persistence.jdbc.password" value="${OPENSHIFT_MYSQL_DB_PASSWORD}" />
+		<entry key="javax.persistence.jdbc.url" value="jdbc:${OPENSHIFT_MYSQL_DB_URL}" />
+	</util:map>
+
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="openshift.test" />
+		<property name="jpaDialect" ref="jpaDialect" />
+		<property name="jpaPropertyMap" ref="jpaPropertyMap" />
+	</bean>
+
+
+</beans>
+

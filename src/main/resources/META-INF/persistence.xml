@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="openshift.test">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<mapping-file>META-INF/eclipselink-orm.xml</mapping-file>
+
+		<class>com.openshift.test.model.User</class>
+
+		<!-- TODO: configure the EclipseLink CacheCoordination for shared caching to increase performance, see http://wiki.eclipse.org/EclipseLink/Examples/JPA/CacheCoordination. -->
+		<shared-cache-mode>NONE</shared-cache-mode>
+		
+		<properties>
+			<!-- Default partioning to replication to allow DDL to be sent to all nodes -->
+			<property name="eclipselink.orm.throw.exceptions" value="true" />
+			<property name="eclipselink.logging.level" value="WARNING" /> <!-- Use FINE for SQL logging -->
+			<property name="eclipselink.weaving" value="static" />
+			<property name="eclipselink.ddl-generation.output-mode" value="database" />
+			<property name="eclipselink.jdbc.exclusive-connection.is-lazy" value="false" />
+		</properties>
+	</persistence-unit>
+</persistence>

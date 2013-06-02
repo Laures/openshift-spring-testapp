@@ -1,0 +1,25 @@
+target
+test-output
+classes
+pom.xml.versionsBackup
+
+# intellij
+*.iml
+*.ipr
+*.iws
+*.log
+atlassian-ide-plugin.xml
+.idea/
+
+# eclipse
+.project
+.metadata
+.classpath
+.settings/
+.loadpath
+.springBeans
+/bin
+
+#mac
+.DS_Store
+
