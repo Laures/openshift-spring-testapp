@@ -10,7 +10,6 @@ pom.xml.versionsBackup
 *.log
 atlassian-ide-plugin.xml
 .idea/
-
 # eclipse
 .project
 .metadata
@@ -19,7 +18,7 @@ atlassian-ide-plugin.xml
 .loadpath
 .springBeans
 /bin
-
 #mac
 .DS_Store
-
+.settings/*
+!.settings/.jsdtscope
