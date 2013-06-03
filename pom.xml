@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>net.openshift.laures</groupId>
@@ -17,7 +18,7 @@
 	<developers>
 		<developer>
 			<id>Laures</id>
-			<name>Alexander B�tz</name>
+			<name>Alexander Bätz</name>
 			<email>baetz.alexander(at)googlemail.com</email>
 			<roles>
 				<role>Project lead</role>
@@ -60,8 +61,8 @@
 		<java.version>1.7</java.version>
 	</properties>
 
-	<!-- <repositories> <repository> <id>repository.springframework.maven.release</id> <name>Spring Framework Maven Release Repository</name> <url>http://repo.springsource.org/milestone</url> 
-		</repository> </repositories> -->
+	<!-- <repositories> <repository> <id>repository.springframework.maven.release</id> <name>Spring Framework Maven Release 
+		Repository</name> <url>http://repo.springsource.org/milestone</url> </repository> </repositories> -->
 
 	<dependencyManagement>
 		<dependencies>
@@ -522,7 +523,8 @@
 
 		<!-- REST -->
 
-		<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-rest-webmvc</artifactId> <version>1.0.0.RELEASE</version> </dependency> -->
+		<!-- <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-rest-webmvc</artifactId> <version>1.0.0.RELEASE</version> 
+			</dependency> -->
 
 	</dependencies>
 
@@ -689,7 +691,8 @@
 	<profiles>
 		<profile>
 			<!-- When built in OpenShift the openshift profile will be used when invoking mvn. -->
-			<!-- Use this profile for any OpenShift specific customization your app will need. By default that is to put the resulting archive into the deployments folder. -->
+			<!-- Use this profile for any OpenShift specific customization your app will need. By default that is to put the resulting 
+				archive into the deployments folder. -->
 			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
 			<id>openshift</id>
 			<build>
