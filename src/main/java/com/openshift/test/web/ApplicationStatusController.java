@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.openshift.test.dao.UserDao;
+import com.openshift.test.socket.SocketClient;
 
 @Controller
 @RequestMapping("/status")
@@ -19,6 +20,9 @@ public class ApplicationStatusController {
 
     @Inject
     private UserDao userDao;
+
+    @Inject
+    private SocketClient client;
 
     @Value("${OPENSHIFT_APP_NAME}")
     private String appName;
@@ -34,6 +38,11 @@ public class ApplicationStatusController {
         result.put("application_name", appName);
         result.put("application_url", appDns);
         result.put("users_count", userDao.count() + "");
+        result.put("last_ping", client.getLastPing() + "");
+        result.put("last_call", client.getLastCall() + "");
+        result.put("last_message", client.getLastmessage() + "");
+        result.put("now", System.currentTimeMillis() + "");
+        result.put("delta", System.currentTimeMillis() - client.getLastCall() + "");
 
         return result;
     }

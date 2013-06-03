@@ -16,6 +16,7 @@
 
 	<import resource="security-module.xml" />
 	<import resource="storage-module.xml" />
+	<import resource="socket-module.xml" />
 
 	<beans profile="development">
 		<context:property-placeholder location="classpath*:*-development.properties" ignore-resource-not-found="true"
