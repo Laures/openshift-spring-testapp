@@ -9,7 +9,7 @@
 
 	<!-- Client side -->
 
-	<int-ip:tcp-connection-factory id="client" type="client" host="${socket.client.host}"
+	<int-ip:tcp-connection-factory id="client" type="client" host="${socket.client.host}" local-address="${socket.server.host}"
 		port="${socket.server.port}" single-use="true" so-timeout="10000" />
 	<int-ip:tcp-outbound-gateway id="outGateway" request-channel="input" reply-channel="clientBytes2StringChannel"
 		connection-factory="client" request-timeout="10000" reply-timeout="10000" />
