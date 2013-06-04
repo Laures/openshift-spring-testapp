@@ -37,15 +37,15 @@ public class LocalAddressTcpNetSocketFactorySupport implements TcpSocketFactoryS
         @Override
         public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
             log.info("creating socket to {}:{} using local address {}", host, port, localAddress);
-            // return factory.createSocket(host, port, localAddress, 0);
-            return new Socket(host, port, localAddress, 8389);
+            return factory.createSocket(host, port, localAddress, 8389);
+            // return new Socket(host, port, localAddress, 990);
         }
 
         @Override
         public Socket createSocket(InetAddress host, int port) throws IOException {
             log.info("creating socket to {}:{} using local address {}", host, port, localAddress);
-            // return factory.createSocket(host, port, localAddress, 0);
-            return new Socket(host, port, localAddress, 8389);
+            return factory.createSocket(host, port, localAddress, 8389);
+            // return new Socket(host, port, localAddress, 8389);
         }
 
         @Override
