@@ -9,9 +9,11 @@ import javax.net.ServerSocketFactory;
 import javax.net.SocketFactory;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.integration.ip.tcp.connection.support.TcpSocketFactorySupport;
 
+@Slf4j
 @RequiredArgsConstructor
 public class LocalAddressTcpNetSocketFactorySupport implements TcpSocketFactorySupport {
 
@@ -34,11 +36,13 @@ public class LocalAddressTcpNetSocketFactorySupport implements TcpSocketFactoryS
 
         @Override
         public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
+            log.info("creating socket to {}:{} using local address {}", host, port, localAddress);
             return factory.createSocket(host, port, localAddress, 0);
         }
 
         @Override
         public Socket createSocket(InetAddress host, int port) throws IOException {
+            log.info("creating socket to {}:{} using local address {}", host, port, localAddress);
             return factory.createSocket(host, port, localAddress, 0);
         }
 
