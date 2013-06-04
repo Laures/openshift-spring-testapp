@@ -1,38 +1,42 @@
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:int="http://www.springframework.org/schema/integration" xmlns:int-ip="http://www.springframework.org/schema/integration/ip"
-	xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task"
-	xsi:schemaLocation="http://www.springframework.org/schema/integration/ip http://www.springframework.org/schema/integration/ip/spring-integration-ip.xsd
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:int="http://www.springframework.org/schema/integration"
+    xmlns:int-ip="http://www.springframework.org/schema/integration/ip" xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task"
+    xsi:schemaLocation="http://www.springframework.org/schema/integration/ip http://www.springframework.org/schema/integration/ip/spring-integration-ip.xsd
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- Client side -->
+    <!-- Client side -->
 
-	<int-ip:tcp-connection-factory id="client" type="client" host="${socket.client.host}" local-address="${socket.server.host}"
-		port="${socket.server.port}" single-use="true" so-timeout="10000" />
-	<int-ip:tcp-outbound-gateway id="outGateway" request-channel="input" reply-channel="clientBytes2StringChannel"
-		connection-factory="client" request-timeout="10000" reply-timeout="10000" />
-	<int:transformer id="clientBytes2String" input-channel="clientBytes2StringChannel" expression="new String(payload)" />
-	<int:gateway id="gw" service-interface="com.openshift.test.socket.MessageGateway" default-request-channel="input" />
+    <bean id="localAddressSupport" class="com.openshift.test.socket.LocalAddressTcpNetSocketFactorySupport">
+        <constructor-arg>
+            <bean class="java.net.InetAddress" factory-method="getByName">
+                <constructor-arg value="${socket.server.host}" />
+            </bean>
+        </constructor-arg>
+    </bean>
 
-	<bean id="task" class="com.openshift.test.socket.SocketClient" />
-	<task:scheduled-tasks>
-		<task:scheduled ref="task" method="sendMessage" fixed-delay="10000" initial-delay="20000" />
-	</task:scheduled-tasks>
+    <int-ip:tcp-connection-factory id="client" type="client" host="${socket.client.host}" port="${socket.server.port}" single-use="true"
+        so-timeout="10000" socket-factory-support="localAddressSupport" />
+    <int-ip:tcp-outbound-gateway id="outGateway" request-channel="input" reply-channel="clientBytes2StringChannel"
+        connection-factory="client" request-timeout="10000" reply-timeout="10000" />
+    <int:transformer id="clientBytes2String" input-channel="clientBytes2StringChannel" expression="new String(payload)" />
+    <int:gateway id="gw" service-interface="com.openshift.test.socket.MessageGateway" default-request-channel="input" />
 
-	<!-- Server side -->
+    <bean id="task" class="com.openshift.test.socket.SocketClient" />
+    <task:scheduled-tasks>
+        <task:scheduled ref="task" method="sendMessage" fixed-delay="10000" initial-delay="20000" />
+    </task:scheduled-tasks>
 
-	<int-ip:tcp-connection-factory id="crLfServer" type="server" port="${socket.server.port}"
-		host="${socket.server.host}" />
-	<int-ip:tcp-inbound-gateway id="gatewayCrLf" connection-factory="crLfServer"
-		request-channel="serverBytes2StringChannel" error-channel="errorChannel" />
-	<int:channel id="toSA" />
-	<int:service-activator input-channel="toSA" ref="echoService" method="test" />
-	<int:transformer id="serverBytes2String" input-channel="serverBytes2StringChannel" output-channel="toSA"
-		expression="new String(payload)" />
-	<int:transformer id="errorHandler" input-channel="errorChannel"
-		expression="payload.failedMessage.payload + ':' + payload.cause.message" />
+    <!-- Server side -->
+
+    <int-ip:tcp-connection-factory id="crLfServer" type="server" port="${socket.server.port}" host="${socket.server.host}" />
+    <int-ip:tcp-inbound-gateway id="gatewayCrLf" connection-factory="crLfServer" request-channel="serverBytes2StringChannel"
+        error-channel="errorChannel" />
+    <int:channel id="toSA" />
+    <int:service-activator input-channel="toSA" ref="echoService" method="test" />
+    <int:transformer id="serverBytes2String" input-channel="serverBytes2StringChannel" output-channel="toSA" expression="new String(payload)" />
+    <int:transformer id="errorHandler" input-channel="errorChannel" expression="payload.failedMessage.payload + ':' + payload.cause.message" />
 
 
 </beans>
