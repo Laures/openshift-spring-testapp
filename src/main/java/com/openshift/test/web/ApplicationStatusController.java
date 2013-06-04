@@ -24,7 +24,10 @@ public class ApplicationStatusController {
     @Inject
     private SocketClient client;
 
-    @Value("${OPENSHIFT_INTERNAL_IP}")
+    @Value("${socket.server.port}")
+    private String port;
+
+    @Value("${OPENSHIFT_JBOSSEWS_IP}")
     private String internalIp;
 
     @Value("${OPENSHIFT_APP_NAME}")
@@ -46,6 +49,7 @@ public class ApplicationStatusController {
         result.put("last_message", client.getLastmessage() + "");
         result.put("now", System.currentTimeMillis() + "");
         result.put("delta", System.currentTimeMillis() - client.getLastCall() + "");
+        result.put("port", port);
 
         result.put("internal_ip", internalIp);
 
