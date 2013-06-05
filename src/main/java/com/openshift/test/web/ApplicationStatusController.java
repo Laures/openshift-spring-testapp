@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.openshift.test.dao.UserDao;
-import com.openshift.test.socket.SocketClient;
+import com.openshift.test.socket.PortChecker;
 
 @Controller
 @RequestMapping("/status")
@@ -21,8 +21,8 @@ public class ApplicationStatusController {
     @Inject
     private UserDao userDao;
 
-    @Inject
-    private SocketClient client;
+    // @Inject
+    // private SocketClient client;
 
     @Value("${socket.server.port}")
     private String port;
@@ -36,22 +36,27 @@ public class ApplicationStatusController {
     @Value("${OPENSHIFT_APP_DNS}")
     private String appDns;
 
+    @Inject
+    private PortChecker checker;
+
     @ResponseBody
     @RequestMapping(method = {RequestMethod.GET})
-    public Map<String, String> getStatus() {
-        Map<String, String> result = new HashMap<>();
+    public Map<String, Object> getStatus() {
+        Map<String, Object> result = new HashMap<>();
 
         result.put("application_name", appName);
         result.put("application_url", appDns);
         result.put("users_count", userDao.count() + "");
-        result.put("last_ping", client.getLastPing() + "");
-        result.put("last_call", client.getLastCall() + "");
-        result.put("last_message", client.getLastmessage() + "");
-        result.put("now", System.currentTimeMillis() + "");
-        result.put("delta", System.currentTimeMillis() - client.getLastCall() + "");
+        // result.put("last_ping", client.getLastPing() + "");
+        // result.put("last_call", client.getLastCall() + "");
+        // result.put("last_message", client.getLastmessage() + "");
+        // result.put("now", System.currentTimeMillis() + "");
+        // result.put("delta", System.currentTimeMillis() - client.getLastCall() + "");
         result.put("port", port);
 
         result.put("internal_ip", internalIp);
+
+        result.put("port_status", checker.getResults());
 
         return result;
     }
